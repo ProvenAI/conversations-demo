@@ -29,7 +29,7 @@ class ConversationsApp extends React.Component {
       conversationsReady: false,
       conversations: [],
       selectedConversationSid: null,
-      newMessage: ""
+      newMessage: "",
     };
   }
 
@@ -59,7 +59,7 @@ class ConversationsApp extends React.Component {
       conversationsReady: false,
       messages: [],
       newMessage: "",
-      conversations: []
+      conversations: [],
     });
 
     localStorage.removeItem("name");
@@ -68,52 +68,59 @@ class ConversationsApp extends React.Component {
 
   getToken = () => {
     // Paste your unique Chat token function
-    const myToken = "<Your token here>";
+    const myToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTS2VmMTJhM2VjZjlkZTRkOWFlODU2OTBlNzY4YzVmNmRjLTE2MTA1NTY4MzEiLCJncmFudHMiOnsiaWRlbnRpdHkiOiJ0ZXN0UGluZWFwcGxlIiwiY2hhdCI6eyJzZXJ2aWNlX3NpZCI6IklTM2FkOWYyM2RhNGUzNDZlZWE3ZmJjNjAyNzIwNDA4OTMifX0sImlhdCI6MTYxMDU1NjgzMSwiZXhwIjoxNjEwNTYwNDMxLCJpc3MiOiJTS2VmMTJhM2VjZjlkZTRkOWFlODU2OTBlNzY4YzVmNmRjIiwic3ViIjoiQUMyNmQ3MzIyYmRhNTNjMDI5MTM0NDY2Yjc5OWE2ZGZiNCJ9.Fq5ETC1sM_Cvv5ZZ0XkMGxa-zKF_vJ1Rql0CBpaM5zA";
     this.setState({ token: myToken }, this.initConversations);
   };
 
   initConversations = async () => {
     window.conversationsClient = ConversationsClient;
-    this.conversationsClient = await ConversationsClient.create(this.state.token);
+    this.conversationsClient = await ConversationsClient.create(
+      this.state.token
+    );
     this.setState({ statusString: "Connecting to Twilio…" });
 
     this.conversationsClient.on("connectionStateChanged", (state) => {
       if (state === "connecting")
         this.setState({
           statusString: "Connecting to Twilio…",
-          status: "default"
+          status: "default",
         });
       if (state === "connected") {
         this.setState({
           statusString: "You are connected.",
-          status: "success"
+          status: "success",
         });
       }
       if (state === "disconnecting")
         this.setState({
           statusString: "Disconnecting from Twilio…",
           conversationsReady: false,
-          status: "default"
+          status: "default",
         });
       if (state === "disconnected")
         this.setState({
           statusString: "Disconnected.",
           conversationsReady: false,
-          status: "warning"
+          status: "warning",
         });
       if (state === "denied")
         this.setState({
           statusString: "Failed to connect.",
           conversationsReady: false,
-          status: "error"
+          status: "error",
         });
     });
     this.conversationsClient.on("conversationJoined", (conversation) => {
-      this.setState({ conversations: [...this.state.conversations, conversation] });
+      this.setState({
+        conversations: [...this.state.conversations, conversation],
+      });
     });
     this.conversationsClient.on("conversationLeft", (thisConversation) => {
       this.setState({
-        conversations: [...this.state.conversations.filter((it) => it !== thisConversation)]
+        conversations: [
+          ...this.state.conversations.filter((it) => it !== thisConversation),
+        ],
       });
     });
   };
@@ -150,7 +157,7 @@ class ConversationsApp extends React.Component {
                   maxWidth: "250px",
                   width: "100%",
                   display: "flex",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
                 <HeaderItem style={{ paddingRight: "0", display: "flex" }}>
@@ -166,7 +173,8 @@ class ConversationsApp extends React.Component {
                 <HeaderItem>
                   <Text strong style={{ color: "white" }}>
                     {selectedConversation &&
-                      (selectedConversation.friendlyName || selectedConversation.sid)}
+                      (selectedConversation.friendlyName ||
+                        selectedConversation.sid)}
                   </Text>
                 </HeaderItem>
                 <HeaderItem style={{ float: "right", marginLeft: "auto" }}>
@@ -186,7 +194,7 @@ class ConversationsApp extends React.Component {
                     style={{
                       color: "white",
                       fontSize: "20px",
-                      marginLeft: "auto"
+                      marginLeft: "auto",
                     }}
                   />
                 </HeaderItem>
